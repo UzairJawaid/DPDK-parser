@@ -201,3 +201,28 @@ Total ip packets:                46628
 Total packets dropped:               0
 Total non ip packets:              21
 ====================================================
+
+
+Scapy Commands
+>>> sendp(Ether()/IP(),iface='dtap1',count=10000)
+
+
+DPDK installation on oracle oci ubuntu minimal and running my parser
+
+sudo apt install git -y
+sudo apt install lshw
+sudo apt install net-tools
+git clone https://github.com/DPDK/dpdk.git
+sudo apt-get install python3 python3-pip python3-setuptools python3-wheel ninja-build -y
+pip3 install meson ninja
+pip3 install pyelftools
+sudo apt-get install libnuma-dev
+sudo apt install meson
+apt-get install libdpdk-dev
+copy DPDK-parser folder into dpdk/examples
+cd dpdk
+meson configure -Dexamples=DPDK=parser build
+ninja -C build
+echo 9024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+ubuntu@instance-20250701-2338:~/dpdk$ sudo ./build/examples/dpdk-DPDK-parser -l 0-3 -n 4 -b 0000:00:06.0 --vdev=net_tap0,iface=tap0,queues=3 --vdev=net_tap2,iface=tap2,queues=3 -- -S 00:00:00:00:AB:02 -D 00:00:00:00:cd:03 -T 1
+
